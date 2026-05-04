@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>タスク管理アプリ</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1 class="app-title">タスク管理</h1>
+      <div class="header-actions">
+        <div class="view-toggle">
+          <button class="view-btn active" id="btn-view-list" title="リスト表示">☰ リスト</button>
+          <button class="view-btn" id="btn-view-cal" title="カレンダー表示">📅 カレンダー</button>
+        </div>
+        <button class="btn btn-primary" id="open-add-modal">+ タスクを追加</button>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <aside class="sidebar">
+        <nav class="filter-nav">
+          <h2 class="sidebar-title">ステータス</h2>
+          <ul class="filter-list" id="status-filters">
+            <li><button class="filter-btn active" data-filter="all">すべて</button></li>
+            <li><button class="filter-btn" data-filter="todo">未着手</button></li>
+            <li><button class="filter-btn" data-filter="in-progress">進行中</button></li>
+            <li><button class="filter-btn" data-filter="done">完了</button></li>
+          </ul>
+
+          <h2 class="sidebar-title">カテゴリ</h2>
+          <ul class="filter-list" id="category-filters"></ul>
+        </nav>
+
+        <div class="stats-panel" id="stats-panel"></div>
+      </aside>
+
+      <main class="main-content">
+        <div class="toolbar">
+          <input class="search-input" id="search-input" type="text" placeholder="タスクを検索...">
+          <select class="sort-select" id="sort-select">
+            <option value="created-desc">作成日（新しい順）</option>
+            <option value="created-asc">作成日（古い順）</option>
+            <option value="due-asc">期限（近い順）</option>
+            <option value="priority-desc">優先度（高い順）</option>
+          </select>
+        </div>
+
+        <div class="task-list" id="task-list"></div>
+        <div class="empty-state hidden" id="empty-state"><p>タスクがありません</p></div>
+        <div class="hidden" id="calendar-view"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- タスク追加・編集モーダル -->
+  <div class="modal-overlay hidden" id="task-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">タスクを追加</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="task-form">
+          <input type="hidden" id="task-id">
+          <div class="form-group">
+            <label class="form-label" for="task-title">タイトル <span class="required">*</span></label>
+            <input class="form-input" type="text" id="task-title" placeholder="タスクのタイトル" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="task-description">説明</label>
+            <textarea class="form-input form-textarea" id="task-description" placeholder="詳細説明（任意）"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="task-category">カテゴリ</label>
+              <select class="form-input" id="task-category"></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="task-priority">優先度</label>
+              <select class="form-input" id="task-priority">
+                <option value="low">低</option>
+                <option value="medium" selected>中</option>
+                <option value="high">高</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="task-status">ステータス</label>
+              <select class="form-input" id="task-status">
+                <option value="todo">未着手</option>
+                <option value="in-progress">進行中</option>
+                <option value="done">完了</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="task-due">期限</label>
+              <input class="form-input" type="date" id="task-due">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="task-tags">タグ（カンマ区切り）</label>
+            <input class="form-input" type="text" id="task-tags" placeholder="例: urgent, review, frontend">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="modal-cancel">キャンセル</button>
+            <button type="submit" class="btn btn-primary">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/task.js"></script>
+  <script src="js/filter.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/drag.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
