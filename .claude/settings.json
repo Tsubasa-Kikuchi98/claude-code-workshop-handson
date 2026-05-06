@@ -1,10 +1,14 @@
 {
   "hooks": {
-    "PostToolUse": [
+    "PreToolUse": [
       {
-        "matcher": "Edit|Write",
+        "matcher": "Bash",
         "hooks": [
-          { "type": "command", "command": "git status --short" }
+          {
+            "type": "command",
+            "shell": "powershell",
+            "command": "$c = ([Console]::In.ReadToEnd() | ConvertFrom-Json).tool_input.command; if ($c -match 'rm\\s+-[rR]|Remove-Item.*-Recurse') { [Console]::Error.WriteLine('Blocked by hook: folder deletion detected. Command: ' + $c); exit 2 }"
+          }
         ]
       }
     ]
